@@ -16,12 +16,10 @@ LIBFT_NAME	= libft.a
 LIBFT		= $(LIBFT_PATH)$(LIBFT_NAME)
 
 # Includes
-INC			=	-I ./ \
-				-I ./libft/ \
-				-I ./minilibx-linux/
+INC			= -I ./includes/ -I ./libft/ -I ./minilibx-linux/
 
 # Sources
-SRC			=	main.c fractal_init.c
+SRC			=	main.c fractal_init.c math_utils.c render.c param.c
 
 # Objects
 OBJ			= $(SRC:.c=.o)
@@ -33,7 +31,7 @@ $(NAME): $(OBJ)
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(MLX) $(LIBFT) $(INC) -lXext -lX11 -lm
 	@echo "Fractol ready."
 
-$(OBJ): $(SRC)
+%.o: %.c
 	@echo "Compiling $<..."
 	@$(CC) $(CFLAGS) -c $< -o $@ $(INC)
 

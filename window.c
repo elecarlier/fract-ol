@@ -6,15 +6,11 @@
 /*   By: ecarlier <ecarlier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 17:43:02 by ecarlier          #+#    #+#             */
-/*   Updated: 2024/02/01 15:54:56 by ecarlier         ###   ########.fr       */
+/*   Updated: 2024/02/04 15:47:05 by ecarlier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minilibx-linux/mlx.h"
-#include <X11/keysym.h>
-#include <stdlib.h>
-#include <stdio.h>
-
+#include "fractol.h"
 
 #define MLX_ERROR	1
 #define WIDTH			400
