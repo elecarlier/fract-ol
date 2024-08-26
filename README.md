@@ -1,0 +1,99 @@
+
+
+
+## What is a fractal ?
+
+Fractals are like magical shapes that repeat themselves no matter how much you zoom in or out. They're not like regular shapes like circles or squares, but instead, they're made using special math tricks. Every part of a fractal looks like a tiny copy of the whole thing. It's like a never-ending pattern that's full of surprises!
+Most of the fractals are generated using mathematical formulas that involve complex number. 
+
+## Complex numbers
+
+Complex numbers consist of a real part and an imaginary part. 
+In the example, x is the real part and y the imaginary part. 
+In the Mandelbrot Set, each point in the complex plane corresponds to a particular complex number. The formula involves repeatedly squaring the previous result and adding the original number, and the iteration is performed for each point in the complex plane.
+
+$$
+z(n+1)=(zn)^2+c
+$$
+
+Every number put in this will either converge to a finite number or diverge to infinity. We consider that if the point converge to a finite number, it’s part of the Mandelbrot. 
+
+We can calculate every pixel as a complex number. Each pixels of the window can then be colored depending on whether the complex number they represent converges or diverges. 
+
+![download.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/e5f7fc72-f8e3-4ee3-8748-3ed58d3c7bc7/802a7b1a-44a0-4bd6-b5a0-f76874cae789/download.png)
+
+## The code
+
+- mlx_new_window -> https://qst0.github.io/ft_libgfx/man_mlx_new_window.html : manage windows
+- mlx_pixel_put  -> https://qst0.github.io/ft_libgfx/man_mlx_pixel_put.html : draw inside window
+- mlx_new_image  -> https://qst0.github.io/ft_libgfx/man_mlx_new_image.html : manipulate images
+    
+    We need to create and allocate the memory for an image
+    
+- [mlx_loop](https://qst0.github.io/ft_libgfx/man_mlx_loop.html) : handle keyboard or mouse events
+
+In the main :
+
+Call fractal_init wich init eveyrthing we need using minilibx, we get the data using mlx_get_data_addr (needs 3 pointers : pixel_bits, line_bytes, endian). I created a struct with those param. fractal_init calls the event_init. 
+
+Clicking anywhere in the window with the mouse is an event. Pressing a key is another. Events are basically everything the user can do to interact with the program.
+
+(Key_handler, mouse_handler, motion_track)
+
+
+
+fractal_render  renders the pixels of a fractal onto a graphical window,  the MLX library 
+
+- This function handles rendering the pixels of a fractal onto a graphical window, based on the type of fractal specified in the f structure. It utilizes different pixel handling functions based on the type of fractal to be rendered. Once all pixels have been rendered, the image is displayed in the specified graphical window.
+    
+    
+    Here's what this function does:
+    
+    It iterates over each pixel in the graphical window, starting from the top-left pixel (0,0) and moving rightwards and then downwards.
+    
+    For each pixel, it determines which fractal needs to be rendered based on the name of the fractal specified in the f structure. If the name of the fractal is "julia", it calls the handle_pixel_s function to handle this pixel. If the name of the fractal is "mandelbrot", it calls the handle_pixel_m function. Otherwise, it calls the handle_pixel_t function.
+    
+    Once all pixels have been rendered, it uses the mlx_put_image_to_window function to display the rendered image in the graphical window specified by f->win_ptr.
+    
+
+handle_pixel_m(int x, int y, t_fractal *f)
+
+$$
+z(n+1)=(zn)^2+c
+$$
+
+(x, y) represents the coordinates of a pixel in an image. 
+
+z is initialized to (0, 0).
+c is initialized based on the coordinates of the image, the zoom level, and the shift.
+
+- It checks if the square of the magnitude of the complex number z exceeds 4.
+    
+    we compute the magnitude or norm of the complex number z at each iteration. The magnitude
+    ∣z∣ of a complex number is calculated as the square root of the sum of the squares of its real and imaginary parts, and this is where the notion of Pythagoras comes into play:
+    
+    If the magnitude ∣∣*z*∣ exceeds a certain threshold (for example, 2), then we consider the complex number *z* to diverge to infinity. Otherwise, it is considered to remain bounded and potentially within the Mandelbrot set.
+    
+    So while the Pythagorean theorem itself is not explicitly used, the way we assess the divergence of iterated values in the Mandelbrot set is based on similar principles of calculating the norm or magnitude of complex number
+    
+- If so, it assigns a color to the pixel based on the number of iterations and updates the image.
+If the condition is not met for all iterations, it assigns a background color to the pixel.
+    
+    for each point c in the complex plane, we iterate this formula repeatedly. At each iteration, we compute a new value of z using the iterative formula.
+    
+    If the sequence of complex numbers generated by this iteration remains bounded (i.e., it does not exceed the threshold value) for a sufficiently large number of iterations, then the point
+    c is considered to belong to the Mandelbrot set. Otherwise, if the sequence diverges to infinity, the point c is considered not to belong to the Mandelbrot set.
+    
+
+We are scaling to get into a frame. (with linear scaling formula)
+
+
+Sources : 
+https://harm-smits.github.io/42docs/libs/minilibx/events.html
+https://youtu.be/wUlVFYJIUNA
+https://medium.com/@leogaudin/fract-ol-creating-graphicall
+y-beautiful-fractals-6664b6b045b5
+https://qst0.github.io/ft_libgfx/man_mlx.html
+https://github.com/Xyckens/fract-ol/tree/master
+https://aurelienbrabant.fr/blog/events-with-the-minilibx
+https://gontjarow.github.io/MiniLibX/mlx-tutorial-create-image.html?source=post_page-----6664b6b045b5--------------------------------
